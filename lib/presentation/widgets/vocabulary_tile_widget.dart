@@ -18,7 +18,7 @@ class VocabularyTileWidget extends StatelessWidget {
       children: [
         Container(
           color: _statusColor,
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -26,7 +26,7 @@ class VocabularyTileWidget extends StatelessWidget {
                 child: Image.network(
                   _wordEntity.imagePath ?? '',
                   loadingBuilder: (context, widget, event) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(placeholderPath);
@@ -49,7 +49,7 @@ class VocabularyTileWidget extends StatelessWidget {
                         Text(
                           _wordEntity.translation,
                           softWrap: true,
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                         const SizedBox(
                           height: 5.0,
@@ -63,10 +63,10 @@ class VocabularyTileWidget extends StatelessWidget {
             ],
           ),
         ),
-        Align(
+        const Align(
           alignment: Alignment.topRight,
           child: Padding(
-            padding: const EdgeInsets.only(top: 5.0, right: 10.0),
+            padding: EdgeInsets.only(top: 5.0, right: 10.0),
             child: Icon(
               Icons.volume_up,
               size: 30.0,

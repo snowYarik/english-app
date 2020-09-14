@@ -16,7 +16,7 @@ class BubbleBarItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical:2.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
       decoration: BoxDecoration(
           color: _hasFocus ? Colors.blue : Colors.transparent,
           borderRadius: BorderRadius.circular(15.0)),

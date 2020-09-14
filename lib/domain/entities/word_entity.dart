@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class WordEntity extends Equatable implements Copyable<WordEntity> {
-  WordEntity({
+  const WordEntity({
     @required this.id,
     @required this.word,
     @required this.translation,

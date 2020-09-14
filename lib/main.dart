@@ -1,6 +1,5 @@
 import 'package:english_app/data/app_database.dart';
 import 'package:english_app/injector.dart';
-import 'package:english_app/presentation/pages/quiz_page.dart';
 import 'package:english_app/presentation/pages/vocabulary_page.dart';
 import 'package:english_app/presentation/resources/colors.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +27,7 @@ class App extends StatelessWidget {
             home: VocabularyPage(),
           );
         }
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }

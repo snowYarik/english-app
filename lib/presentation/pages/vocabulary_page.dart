@@ -1,4 +1,3 @@
-import 'package:english_app/domain/entities/word_entity.dart';
 import 'package:english_app/presentation/bloc/vocabulary_bloc/vocabulary_bloc.dart';
 import 'package:english_app/presentation/bloc/vocabulary_bloc/vocabulary_bloc_event.dart';
 import 'package:english_app/presentation/bloc/vocabulary_bloc/vocabulary_bloc_state.dart';
@@ -29,7 +28,7 @@ class _VocabularyPageState extends State<VocabularyPage> {
       create: (context) => _vocabularyBloc,
       child: CupertinoPageScaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           leading: Icon(
             Icons.keyboard_arrow_left,
             size: 40.0,
@@ -51,7 +50,7 @@ class _VocabularyPageState extends State<VocabularyPage> {
                           ListView.builder(
                             itemCount: data.words.length,
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             padding: const EdgeInsets.all(0.0),
                             itemBuilder: (context, index) {
                               return Container(
@@ -64,7 +63,7 @@ class _VocabularyPageState extends State<VocabularyPage> {
                           ),
                           Container(
                             width: double.infinity,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 30.0, vertical: 10.0),
                             child: RaisedButton(
                               onPressed: () {
@@ -74,9 +73,8 @@ class _VocabularyPageState extends State<VocabularyPage> {
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               color: Colors.blue,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 15.0),
                                 child: Text(
                                   'Start Lesson',
                                   style: TextStyle(
@@ -92,7 +90,9 @@ class _VocabularyPageState extends State<VocabularyPage> {
                       );
                     }
                   }
-                  return Center(child: const CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 },
               ),
             ),

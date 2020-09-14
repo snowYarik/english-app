@@ -18,7 +18,7 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         middle: Text('Result'),
       ),
       child: SafeArea(
@@ -43,7 +43,7 @@ class ResultPage extends StatelessWidget {
                   onPressed: () {
                     _navigateToVocabulatyPage(context: context);
                   },
-                  child: Text('Vocabulary page'),
+                  child: const Text('Vocabulary page'),
                 ),
               )
             ],

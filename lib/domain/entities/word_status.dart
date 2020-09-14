@@ -18,6 +18,8 @@ extension WordStatusExtension on WordStatus {
       case WordStatus.mistake:
         return 'mistake';
         break;
+      default:
+        return 'unused';
     }
   }
 }

@@ -8,5 +8,4 @@ abstract class IVocabularyRepository {
   Future<List<WordEntity>> getWords({Finder finder});
   Future<void> updateWord({@required WordEntity wordEntity});
   Future<int> getWordsCount();
-
 }

@@ -13,7 +13,7 @@ class BubbleBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
       child: Row(

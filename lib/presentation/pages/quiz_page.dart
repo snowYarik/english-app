@@ -36,19 +36,19 @@ class _QuizPageState extends State<QuizPage> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.keyboard_arrow_left,
               size: 40.0,
             ),
           ),
-          middle: Text('Find word'),
+          middle: const Text('Find word'),
         ),
         child: SafeArea(
           child: Material(
             child: Column(
               children: [
-                BubbleBarWidget(),
-                ProgressWidget(questionNumber: 1),
+                const BubbleBarWidget(),
+                const ProgressWidget(questionNumber: 1),
                 StreamBuilder<QuizBlocState>(
                   stream: _quizBloc.stateStream,
                   builder: (context, snapshot) {
@@ -80,7 +80,9 @@ class _QuizPageState extends State<QuizPage> {
                         return const SizedBox.shrink();
                       }
                     }
-                    return Center(child: const CircularProgressIndicator());
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   },
                 ),
               ],

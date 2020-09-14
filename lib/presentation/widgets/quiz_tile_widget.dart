@@ -26,8 +26,8 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
   }
 
   @override
@@ -38,7 +38,7 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
             GiveAnswer(word: widget._word, controller: _animationController));
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10.0),
           topRight: Radius.circular(10.0),
         ),
@@ -58,7 +58,7 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
               Image.network(
                 widget._word.imagePath ?? '',
                 loadingBuilder: (context, widget, event) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
@@ -67,7 +67,7 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
                 },
               ),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10.0),
                     bottomRight: Radius.circular(10.0),

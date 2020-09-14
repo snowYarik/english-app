@@ -12,9 +12,9 @@ class CurrentQuizWordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      margin: EdgeInsets.only(top: 40.0, left: 50.0, right: 50.0),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      margin: const EdgeInsets.only(top: 40.0, left: 50.0, right: 50.0),
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(10.0),

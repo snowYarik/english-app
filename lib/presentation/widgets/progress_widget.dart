@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Not implemented
 class ProgressWidget extends StatefulWidget {
   const ProgressWidget({
     Key key,
@@ -15,22 +16,21 @@ class ProgressWidget extends StatefulWidget {
 
 class _ProgressWidgetState extends State<ProgressWidget>
     with SingleTickerProviderStateMixin {
-  final _totalPregress = 100.0;
-  double _currentProgress;
-  Animation<double> _animation;
-  AnimationController _controller;
+  final _totalProgress = 100.0;
+  double _currentProgress = 0.0;
+  AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _currentProgress = _totalPregress / widget._questionNumber;
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
-    _animation =
-        Tween<double>(begin: 0.0, end: _currentProgress).animate(_controller)
-          ..addListener(() {
-            setState(() {});
-          });
+    _currentProgress = _totalProgress / widget._questionNumber;
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationController.forward();
+    });
   }
 
   @override
@@ -38,19 +38,21 @@ class _ProgressWidgetState extends State<ProgressWidget>
     return Container(
       width: double.infinity,
       height: 10.0,
-      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Container(
-          width: 100.0,
-          height: 10.0,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(10.0),
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (BuildContext context, Widget child) => Container(
+            width: _animationController.value * 200.0,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
           ),
         ),
       ),
@@ -59,7 +61,7 @@ class _ProgressWidgetState extends State<ProgressWidget>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 }

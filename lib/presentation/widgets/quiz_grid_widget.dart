@@ -17,13 +17,13 @@ class QuizGridWidget extends StatelessWidget {
       crossAxisCount: 2,
       childAspectRatio: 1.2,
       shrinkWrap: true,
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0.0),
       children: List.generate(
         _words.length,
         (index) {
           final word = _words[index];
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.0),
+            margin: const EdgeInsets.symmetric(horizontal: 20.0),
             child: QuizTileWidget(word: word),
           );
         },

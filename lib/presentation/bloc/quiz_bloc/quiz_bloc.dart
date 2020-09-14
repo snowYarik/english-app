@@ -24,6 +24,7 @@ class QuizBloc extends IBloc {
   bool _isSecondsTry = false;
   WordEntity _currentWord;
   final _quizWords = <WordEntity>[];
+  int _wordsCount = 0;
   final _eventStreamController = BehaviorSubject<QuizBlocEvent>();
   Stream<QuizBlocEvent> get _eventStream => _eventStreamController.stream;
   Sink<QuizBlocEvent> get eventSink => _eventStreamController.sink;
@@ -41,14 +42,13 @@ class QuizBloc extends IBloc {
     } else if (event is GiveAnswer) {
       if (event.word.id == _currentWord.id) {
         _currentWord = event.word.copyWith(wordStatus: WordStatus.success);
-        _quizWords.map((e) {
+        final words = _quizWords.map((e) {
           if (e.id == _currentWord.id) {
             return _currentWord;
           }
           return e;
-        });
-        _stateSink
-            .add(Success(currentWord: _currentWord, quizWords: _quizWords));
+        }).toList();
+        _stateSink.add(Success(currentWord: _currentWord, quizWords: words));
         await event.controller
             .forward()
             .then((value) => event.controller.reset());
@@ -59,6 +59,7 @@ class QuizBloc extends IBloc {
         _isSecondsTry = false;
         _count++;
         if (_count >= 5) {
+          _count = 0;
           _stateSink.add(QuizEnded(
               congratulation: _congratulation,
               scoreInPercent: _scoreInPercent));
@@ -66,15 +67,13 @@ class QuizBloc extends IBloc {
           eventSink.add(InitQuiz());
         }
       } else {
-        // _currentWord = event.word.copyWith(wordStatus: WordStatus.mistake);
-        _quizWords.map((e) {
-          if (e.id == _currentWord.id) {
-            return _currentWord.copyWith(wordStatus: WordStatus.mistake);
+        final words = _quizWords.map((e) {
+          if (event.word.id == e.id) {
+            return event.word.copyWith(wordStatus: WordStatus.mistake);
           }
           return e;
-        });
-        _stateSink
-            .add(Mistake(currentWord: _currentWord, quizWords: _quizWords));
+        }).toList();
+        _stateSink.add(Mistake(currentWord: _currentWord, quizWords: words));
         await event.controller
             .forward()
             .then((value) => event.controller.reset());
@@ -99,7 +98,7 @@ class QuizBloc extends IBloc {
       _quizWords.clear();
     }
     await _loadCurrentWord();
-    final wordsCount = await GetWordsCount(
+    _wordsCount = await GetWordsCount(
             vocabularyRepository: getIt<IVocabularyRepository>())
         .execute();
     while (_quizWords.length < 3) {
@@ -109,7 +108,7 @@ class QuizBloc extends IBloc {
           params: Finder(
             filter: Filter.and(<Filter>[
               Filter.notEquals('id', _currentWord.id),
-              Filter.byKey(Random().nextInt(wordsCount))
+              Filter.byKey(Random().nextInt(_wordsCount))
             ]),
             limit: 1,
           ),
