@@ -15,9 +15,11 @@ class BubbleBarItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical:2.0),
       decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _hasFocus ? Colors.blue : Colors.transparent),
+          color: _hasFocus ? Colors.blue : Colors.transparent,
+          borderRadius: BorderRadius.circular(15.0)),
       child: Icon(
         _iconData,
         color: _hasFocus ? Colors.white : Colors.grey,

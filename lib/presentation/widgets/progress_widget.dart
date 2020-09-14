@@ -36,10 +36,23 @@ class _ProgressWidgetState extends State<ProgressWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      child: Container(
-        width: _animation.value,
-        color: Colors.blue,
+      width: double.infinity,
+      height: 10.0,
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          width: 100.0,
+          height: 10.0,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
       ),
     );
   }

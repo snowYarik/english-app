@@ -1,8 +1,13 @@
 import 'package:english_app/data/app_database.dart';
+import 'package:english_app/injector.dart';
+import 'package:english_app/presentation/pages/quiz_page.dart';
+import 'package:english_app/presentation/pages/vocabulary_page.dart';
+import 'package:english_app/presentation/resources/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sembast/sembast.dart';
 
 void main() {
+  configureDependencies();
   runApp(App());
 }
 
@@ -17,10 +22,10 @@ class App extends StatelessWidget {
           return MaterialApp(
             title: 'English App',
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: grey,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: null,
+            home: QuizPage(),
           );
         }
         return SizedBox.shrink();
@@ -31,7 +36,7 @@ class App extends StatelessWidget {
   Future<void> initFakeData() async {
     final wordsFolder = intMapStoreFactory.store('Words');
     final database = await AppDatabase.instance.database;
-    if (await wordsFolder.count(database) == 0) {
+    if (await wordsFolder.count(database) != 0) {
       return;
     }
     return wordsFolder.addAll(database, <Map<String, dynamic>>[
@@ -45,7 +50,7 @@ class App extends StatelessWidget {
         'word': 'Cat',
         'translation': 'Кот',
         'sentence': 'My cat is big',
-        'status': 'unused'
+        'status': 'mistake'
       },
       {
         'word': 'Tree',
@@ -63,13 +68,13 @@ class App extends StatelessWidget {
         'word': 'Book',
         'translation': 'Книга',
         'sentence': 'My book is small',
-        'status': 'unused'
+        'status': 'success'
       },
       {
         'word': 'Cap',
         'translation': 'Шапка',
         'sentence': 'My cap is cool',
-        'status': 'unused'
+        'status': 'success'
       },
       {
         'word': 'Cup',
@@ -105,7 +110,7 @@ class App extends StatelessWidget {
         'word': 'Lion',
         'translation': 'Лев',
         'sentence': 'This lion is big',
-        'status': 'unused'
+        'status': 'mistake'
       },
       {
         'word': 'Spoon',

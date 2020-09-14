@@ -18,12 +18,18 @@ dependencies:
   get_it: ^4.0.4
   injectable: ^1.0.4
   injectable_generator: ^1.0.4
-  
+  copyable: ^0.0.1+2
+
+dependency_overrides:
+  analyzer: ^0.39.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.9.2
+  build_runner: ^1.10.2
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
