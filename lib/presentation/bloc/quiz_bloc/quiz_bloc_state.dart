@@ -3,20 +3,23 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class QuizBlocState extends Equatable {
-  const QuizBlocState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class Inited extends QuizBlocState {
-  const Inited({
+  const QuizBlocState({
     @required this.currentWord,
     @required this.quizWords,
   });
 
   final WordEntity currentWord;
   final List<WordEntity> quizWords;
+
+  @override
+  List<Object> get props => [currentWord, quizWords];
+}
+
+class Inited extends QuizBlocState {
+  const Inited({
+    @required WordEntity currentWord,
+    @required List<WordEntity> quizWords,
+  }) : super(currentWord: currentWord, quizWords: quizWords);
 
   @override
   List<Object> get props => [currentWord, quizWords];
@@ -24,12 +27,9 @@ class Inited extends QuizBlocState {
 
 class Success extends QuizBlocState {
   const Success({
-    @required this.currentWord,
-    @required this.quizWords,
-  });
-
-  final WordEntity currentWord;
-  final List<WordEntity> quizWords;
+    @required WordEntity currentWord,
+    @required List<WordEntity> quizWords,
+  }) : super(currentWord: currentWord, quizWords: quizWords);
 
   @override
   List<Object> get props => [currentWord, quizWords];
@@ -37,12 +37,9 @@ class Success extends QuizBlocState {
 
 class Mistake extends QuizBlocState {
   const Mistake({
-    @required this.currentWord,
-    @required this.quizWords,
-  });
-
-  final WordEntity currentWord;
-  final List<WordEntity> quizWords;
+    @required WordEntity currentWord,
+    @required List<WordEntity> quizWords,
+  }) : super(currentWord: currentWord, quizWords: quizWords);
 
   @override
   List<Object> get props => [currentWord, quizWords];

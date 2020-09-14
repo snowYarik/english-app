@@ -34,20 +34,24 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<QuizBloc>(context, listen: false)
-            .eventSink
-            .add(GiveAnswer(word: widget._word));
+        Provider.of<QuizBloc>(context, listen: false).eventSink.add(
+            GiveAnswer(word: widget._word, controller: _animationController));
       },
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (BuildContext context, Widget child) {
-          return child;
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0),
-          ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
+        ),
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (BuildContext context, Widget child) => Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _borderColor,
+                  width: _animationController.value * 4,
+                ),
+              ),
+              child: child),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -96,5 +100,11 @@ class _QuizTileWidgetState extends State<QuizTileWidget>
       default:
         return Colors.transparent;
     }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }

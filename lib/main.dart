@@ -25,7 +25,7 @@ class App extends StatelessWidget {
               primarySwatch: grey,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: QuizPage(),
+            home: VocabularyPage(),
           );
         }
         return SizedBox.shrink();

@@ -10,6 +10,7 @@ import 'package:english_app/injector.dart';
 import 'package:english_app/presentation/bloc/i_bloc.dart';
 import 'package:english_app/presentation/bloc/quiz_bloc/quiz_bloc_event.dart';
 import 'package:english_app/presentation/bloc/quiz_bloc/quiz_bloc_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sembast/sembast.dart';
 
@@ -39,43 +40,55 @@ class QuizBloc extends IBloc {
       ));
     } else if (event is GiveAnswer) {
       if (event.word.id == _currentWord.id) {
+        _currentWord = event.word.copyWith(wordStatus: WordStatus.success);
+        _quizWords.map((e) {
+          if (e.id == _currentWord.id) {
+            return _currentWord;
+          }
+          return e;
+        });
+        _stateSink
+            .add(Success(currentWord: _currentWord, quizWords: _quizWords));
+        await event.controller
+            .forward()
+            .then((value) => event.controller.reset());
+        await Future.delayed(const Duration(milliseconds: 300));
         await UpdateWord(vocabularyRepository: getIt<IVocabularyRepository>())
             .execute(
                 params: event.word.copyWith(wordStatus: WordStatus.success));
         _isSecondsTry = false;
         _count++;
-        _stateSink.add(Success(
-            currentWord: event.word.copyWith(wordStatus: WordStatus.mistake),
-            quizWords: _quizWords));
-        await Future.delayed(const Duration(milliseconds: 300));
         if (_count >= 5) {
           _stateSink.add(QuizEnded(
               congratulation: _congratulation,
-              scoreInPercent: _scoreInpercent));
+              scoreInPercent: _scoreInPercent));
         } else {
           eventSink.add(InitQuiz());
         }
       } else {
+        // _currentWord = event.word.copyWith(wordStatus: WordStatus.mistake);
+        _quizWords.map((e) {
+          if (e.id == _currentWord.id) {
+            return _currentWord.copyWith(wordStatus: WordStatus.mistake);
+          }
+          return e;
+        });
+        _stateSink
+            .add(Mistake(currentWord: _currentWord, quizWords: _quizWords));
+        await event.controller
+            .forward()
+            .then((value) => event.controller.reset());
         await Future.delayed(const Duration(milliseconds: 300));
         if (_isSecondsTry) {
-          _stateSink.add(Mistake(
-              currentWord: event.word.copyWith(wordStatus: WordStatus.mistake),
-              quizWords: _quizWords));
           await UpdateWord(vocabularyRepository: getIt<IVocabularyRepository>())
               .execute(
                   params: event.word.copyWith(wordStatus: WordStatus.mistake));
           _stateSink.add(QuizEnded(
               congratulation: _congratulation,
-              scoreInPercent: _scoreInpercent));
+              scoreInPercent: _scoreInPercent));
         } else {
-          _stateSink.add(Mistake(
-              currentWord: event.word.copyWith(wordStatus: WordStatus.mistake),
-              quizWords: _quizWords));
           _isSecondsTry = true;
-          _stateSink.add(Inited(
-            currentWord: _currentWord,
-            quizWords: _quizWords,
-          ));
+          eventSink.add(InitQuiz());
         }
       }
     }
@@ -109,47 +122,35 @@ class QuizBloc extends IBloc {
   }
 
   Future<void> _loadCurrentWord() async {
-    _currentWord =
-        await GetWords(vocabularyRepository: getIt<IVocabularyRepository>())
-            .execute(
-                params: Finder(
-                    filter: Filter.equals(
-                      'status',
-                      WordStatus.unused.statusString,
-                    ),
-                    limit: 1))
-            .then((value) => value.first);
-    _currentWord ??=
-        await GetWords(vocabularyRepository: getIt<IVocabularyRepository>())
-            .execute(
-                params: Finder(
-                    filter: Filter.equals(
-                      'status',
-                      WordStatus.mistake.statusString,
-                    ),
-                    limit: 1))
-            .then((value) => value.first);
+    _currentWord = await _getCurrentWord(wordStatus: WordStatus.unused);
+    _currentWord ??= await _getCurrentWord(wordStatus: WordStatus.mistake);
+    _currentWord ??= await _getCurrentWord(wordStatus: WordStatus.success);
+  }
 
-    _currentWord ??=
+  Future<WordEntity> _getCurrentWord({@required WordStatus wordStatus}) async {
+    final words =
         await GetWords(vocabularyRepository: getIt<IVocabularyRepository>())
             .execute(
                 params: Finder(
                     filter: Filter.equals(
                       'status',
-                      WordStatus.success.statusString,
+                      wordStatus.statusString,
                     ),
-                    limit: 1))
-            .then((value) => value.first);
+                    limit: 1));
+    if (words.isNotEmpty) {
+      return words.first;
+    }
+    return null;
   }
 
   String get _congratulation {
-    if (_scoreInpercent < 60) {
+    if (_scoreInPercent < 60) {
       return 'Можете Лучше!';
     }
     return 'Поздравляем!';
   }
 
-  int get _scoreInpercent {
+  int get _scoreInPercent {
     return _count ~/ _totalAmount * 100;
   }
 

@@ -54,8 +54,10 @@ class _QuizPageState extends State<QuizPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active &&
                         !snapshot.hasError) {
-                      if (snapshot.data is Inited) {
-                        final Inited data = snapshot.data;
+                      if (snapshot.data is Inited ||
+                          snapshot.data is Success ||
+                          snapshot.data is Mistake) {
+                        final data = snapshot.data;
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
